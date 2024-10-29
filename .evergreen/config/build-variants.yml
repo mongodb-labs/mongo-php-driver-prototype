@@ -29,8 +29,7 @@ buildvariants:
     tags: ["build", "rhel", "zseries", "tag"]
     run_on: rhel8-zseries-small
     tasks:
-      # TODO: Re-enable PHP 8.4 once it's available on PPC and Zseries
-      - name: "build-all-php-except-8.4"
+      - name: "build-all-php"
   - name: build-rhel8-arm64
     display_name: "Build: RHEL 8 ARM64"
     tags: ["build", "rhel", "arm64", "tag"]
@@ -42,8 +41,7 @@ buildvariants:
     tags: ["build", "rhel", "power8", "tag"]
     run_on: rhel8-power-large
     tasks:
-      # TODO: Re-enable PHP 8.4 once it's available on PPC and Zseries
-      - name: "build-all-php-except-8.4"
+      - name: "build-all-php"
   - name: build-rhel8
     display_name: "Build: RHEL 8 x64"
     tags: ["build", "rhel", "x64", "pr", "tag"]
