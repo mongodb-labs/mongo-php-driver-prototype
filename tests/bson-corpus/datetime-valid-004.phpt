@@ -11,6 +11,7 @@ require_once __DIR__ . '/../utils/basic.inc';
 
 $canonicalBson = hex2bin('1000000009610000DC1FD277E6000000');
 $canonicalExtJson = '{"a":{"$date":{"$numberLong":"253402300800000"}}}';
+$relaxedExtJson = '{"a":{"$date":{"$numberLong":"253402300800000"}}}';
 
 // Canonical BSON -> BSON object -> Canonical BSON
 echo bin2hex((string) MongoDB\BSON\Document::fromBSON($canonicalBson)), "\n";
@@ -18,8 +19,14 @@ echo bin2hex((string) MongoDB\BSON\Document::fromBSON($canonicalBson)), "\n";
 // Canonical BSON -> BSON object -> Canonical extJSON
 echo json_canonicalize(MongoDB\BSON\Document::fromBSON($canonicalBson)->toCanonicalExtendedJSON()), "\n";
 
+// Canonical BSON -> BSON object -> Relaxed extJSON
+echo json_canonicalize(MongoDB\BSON\Document::fromBSON($canonicalBson)->toRelaxedExtendedJSON()), "\n";
+
 // Canonical extJSON -> BSON object -> Canonical BSON
 echo bin2hex((string) MongoDB\BSON\Document::fromJSON($canonicalExtJson)), "\n";
+
+// Relaxed extJSON -> BSON object -> Relaxed extJSON
+echo json_canonicalize(MongoDB\BSON\Document::fromJSON($relaxedExtJson)->toRelaxedExtendedJSON()), "\n";
 
 ?>
 ===DONE===
@@ -27,5 +34,7 @@ echo bin2hex((string) MongoDB\BSON\Document::fromJSON($canonicalExtJson)), "\n";
 --EXPECT--
 1000000009610000dc1fd277e6000000
 {"a":{"$date":{"$numberLong":"253402300800000"}}}
+{"a":{"$date":{"$numberLong":"253402300800000"}}}
 1000000009610000dc1fd277e6000000
+{"a":{"$date":{"$numberLong":"253402300800000"}}}
 ===DONE===
