@@ -1446,7 +1446,7 @@ bool php_phongo_bson_to_json(zval* return_value, const bson_t* bson, php_phongo_
 	size_t json_len;
 
 	if (mode == PHONGO_JSON_MODE_LEGACY) {
-		json = bson_as_json(bson, &json_len);
+		json = bson_as_legacy_extended_json(bson, &json_len);
 	} else if (mode == PHONGO_JSON_MODE_CANONICAL) {
 		json = bson_as_canonical_extended_json(bson, &json_len);
 	} else if (mode == PHONGO_JSON_MODE_RELAXED) {
