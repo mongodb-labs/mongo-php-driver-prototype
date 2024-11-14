@@ -127,6 +127,7 @@ if test "$PHP_MONGODB" != "no"; then
   PHP_MONGODB_SOURCES="\
     php_phongo.c \
     src/phongo_apm.c \
+    src/phongo_atomic.c \
     src/phongo_bson.c \
     src/phongo_bson_encode.c \
     src/phongo_client.c \
