@@ -127,6 +127,7 @@ if test "$PHP_MONGODB" != "no"; then
   PHP_MONGODB_SOURCES="\
     php_phongo.c \
     src/phongo_apm.c \
+    src/phongo_atomic.c \
     src/phongo_bson.c \
     src/phongo_bson_encode.c \
     src/phongo_client.c \
@@ -276,7 +277,7 @@ if test "$PHP_MONGODB" != "no"; then
   PHP_MONGODB_MONGOCRYPT_VERSION_STRING="None"
 
   if test "$PHP_MONGODB_SYSTEM_LIBS" != "no"; then
-    PKG_CHECK_MODULES([PHP_MONGODB_BSON], [libbson-1.0 >= 1.28.1], [
+    PKG_CHECK_MODULES([PHP_MONGODB_BSON], [libbson-1.0 >= 1.29.0], [
       PHP_MONGODB_BSON_VERSION=`$PKG_CONFIG libbson-1.0 --modversion`
       PHP_MONGODB_BSON_VERSION_STRING="System ($PHP_MONGODB_BSON_VERSION)"
 
@@ -284,10 +285,10 @@ if test "$PHP_MONGODB" != "no"; then
       PHP_EVAL_LIBLINE($PHP_MONGODB_BSON_LIBS, MONGODB_SHARED_LIBADD)
       AC_DEFINE(HAVE_SYSTEM_LIBBSON, 1, [Use system libbson])
     ],[
-      AC_MSG_ERROR([Could not find system library for libbson >= 1.28.1])
+      AC_MSG_ERROR([Could not find system library for libbson >= 1.29.0])
     ])
 
-    PKG_CHECK_MODULES([PHP_MONGODB_MONGOC], [libmongoc-1.0 >= 1.28.1], [
+    PKG_CHECK_MODULES([PHP_MONGODB_MONGOC], [libmongoc-1.0 >= 1.29.0], [
       PHP_MONGODB_BSON_VERSION=`$PKG_CONFIG libbson-1.0 --modversion`
       PHP_MONGODB_BSON_VERSION_STRING="System ($PHP_MONGODB_BSON_VERSION)"
 
@@ -295,7 +296,7 @@ if test "$PHP_MONGODB" != "no"; then
       PHP_EVAL_LIBLINE($PHP_MONGODB_MONGOC_LIBS, MONGODB_SHARED_LIBADD)
       AC_DEFINE(HAVE_SYSTEM_LIBMONGOC, 1, [Use system libmongoc])
     ],[
-      AC_MSG_ERROR(Could not find system library for libmongoc >= 1.28.1)
+      AC_MSG_ERROR(Could not find system library for libmongoc >= 1.29.0)
     ])
 
     if test "$PHP_MONGODB_CLIENT_SIDE_ENCRYPTION" != "no"; then
@@ -394,7 +395,7 @@ if test "$PHP_MONGODB" != "no"; then
     fi
 
     dnl Sources below are updated by scripts/update-submodule-sources.php
-    PHP_MONGODB_COMMON_SOURCES="common-b64.c common-md5.c common-thread.c"
+    PHP_MONGODB_COMMON_SOURCES="common-atomic.c common-b64.c common-md5.c common-thread.c"
     PHP_MONGODB_KMS_MESSAGE_SOURCES="hexlify.c kms_azure_request.c kms_b64.c kms_caller_identity_request.c kms_crypto_apple.c kms_crypto_libcrypto.c kms_crypto_none.c kms_crypto_windows.c kms_decrypt_request.c kms_encrypt_request.c kms_gcp_request.c kms_kmip_reader_writer.c kms_kmip_request.c kms_kmip_response.c kms_kmip_response_parser.c kms_kv_list.c kms_message.c kms_port.c kms_request.c kms_request_opt.c kms_request_str.c kms_response.c kms_response_parser.c sort.c"
     PHP_MONGODB_BSON_SOURCES="bcon.c bson-atomic.c bson.c bson-clock.c bson-context.c bson-decimal128.c bson-error.c bson-iso8601.c bson-iter.c bson-json.c bson-keys.c bson-md5.c bson-memory.c bson-oid.c bson-reader.c bson-string.c bson-timegm.c bson-utf8.c bson-value.c bson-version-functions.c bson-writer.c"
     PHP_MONGODB_JSONSL_SOURCES="jsonsl.c"
@@ -402,18 +403,18 @@ if test "$PHP_MONGODB" != "no"; then
     PHP_MONGODB_UTF8PROC_SOURCES="utf8proc.c"
     PHP_MONGODB_ZLIB_SOURCES="adler32.c compress.c crc32.c deflate.c gzclose.c gzlib.c gzread.c gzwrite.c infback.c inffast.c inflate.c inftrees.c trees.c uncompr.c zutil.c"
 
-    PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/common/], $PHP_MONGODB_COMMON_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
+    PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/common/src/], $PHP_MONGODB_COMMON_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/libbson/src/bson/], $PHP_MONGODB_BSON_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/libbson/src/jsonsl/], $PHP_MONGODB_JSONSL_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
     PHP_MONGODB_ADD_SOURCES([src/libmongoc/src/libmongoc/src/mongoc/], $PHP_MONGODB_MONGOC_SOURCES, $PHP_MONGODB_BUNDLED_CFLAGS)
 
-    PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/common/])
+    PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/common/src/])
     PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/uthash/])
     PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/libbson/src/])
     PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/libbson/src/jsonsl/])
     PHP_MONGODB_ADD_INCLUDE([src/libmongoc/src/libmongoc/src/])
 
-    PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/common/])
+    PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/common/src/])
     PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/libbson/src/bson/])
     PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/libbson/src/jsonsl/])
     PHP_MONGODB_ADD_BUILD_DIR([src/libmongoc/src/libmongoc/src/mongoc/])
@@ -431,7 +432,7 @@ if test "$PHP_MONGODB" != "no"; then
     ac_config_dir=PHP_EXT_SRCDIR(mongodb)
 
     AC_CONFIG_FILES([
-      ${ac_config_dir}/src/libmongoc/src/common/common-config.h
+      ${ac_config_dir}/src/libmongoc/src/common/src/common-config.h
       ${ac_config_dir}/src/libmongoc/src/libbson/src/bson/bson-config.h
       ${ac_config_dir}/src/libmongoc/src/libbson/src/bson/bson-version.h
       ${ac_config_dir}/src/libmongoc/src/libmongoc/src/mongoc/mongoc-config.h
