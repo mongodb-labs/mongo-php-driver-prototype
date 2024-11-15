@@ -25,11 +25,10 @@
 #include <sched.h>
 #endif
 
-static void
-_thrd_yield (void)
+static void _thrd_yield(void)
 {
-   BSON_IF_WINDOWS (SwitchToThread ();)
-   BSON_IF_POSIX (sched_yield ();)
+	BSON_IF_WINDOWS(SwitchToThread();)
+	BSON_IF_POSIX(sched_yield();)
 }
 
 /**
@@ -38,87 +37,83 @@ _thrd_yield (void)
  */
 static int8_t gEmulAtomicLock = 0;
 
-static void
-_lock_emul_atomic (void)
+static void _lock_emul_atomic(void)
 {
-   int i;
-   if (phongo_atomic_int8_compare_exchange_weak (&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) == 0) {
-      /* Successfully took the spinlock */
-      return;
-   }
-   /* Failed. Try taking ten more times, then begin sleeping. */
-   for (i = 0; i < 10; ++i) {
-      if (phongo_atomic_int8_compare_exchange_weak (&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) == 0) {
-         /* Succeeded in taking the lock */
-         return;
-      }
-   }
-   /* Still don't have the lock. Spin and yield */
-   while (phongo_atomic_int8_compare_exchange_weak (&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) != 0) {
-      _thrd_yield ();
-   }
+	int i;
+	if (phongo_atomic_int8_compare_exchange_weak(&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) == 0) {
+		/* Successfully took the spinlock */
+		return;
+	}
+	/* Failed. Try taking ten more times, then begin sleeping. */
+	for (i = 0; i < 10; ++i) {
+		if (phongo_atomic_int8_compare_exchange_weak(&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) == 0) {
+			/* Succeeded in taking the lock */
+			return;
+		}
+	}
+	/* Still don't have the lock. Spin and yield */
+	while (phongo_atomic_int8_compare_exchange_weak(&gEmulAtomicLock, 0, 1, phongo_memory_order_acquire) != 0) {
+		_thrd_yield();
+	}
 }
 
-static void
-_unlock_emul_atomic (void)
+static void _unlock_emul_atomic(void)
 {
-   int64_t rv = phongo_atomic_int8_exchange (&gEmulAtomicLock, 0, phongo_memory_order_release);
-   BSON_ASSERT (rv == 1 && "Released atomic lock while not holding it");
+	int64_t rv = phongo_atomic_int8_exchange(&gEmulAtomicLock, 0, phongo_memory_order_release);
+	BSON_ASSERT(rv == 1 && "Released atomic lock while not holding it");
 }
 
-int32_t
-_phongo_emul_atomic_int32_fetch_add (volatile int32_t *p, int32_t n, enum phongo_memory_order _unused)
+int32_t _phongo_emul_atomic_int32_fetch_add(volatile int32_t* p, int32_t n, enum phongo_memory_order _unused)
 {
-   int32_t ret;
+	int32_t ret;
 
-   BSON_UNUSED (_unused);
+	BSON_UNUSED(_unused);
 
-   _lock_emul_atomic ();
-   ret = *p;
-   *p += n;
-   _unlock_emul_atomic ();
-   return ret;
+	_lock_emul_atomic();
+	ret = *p;
+	*p += n;
+	_unlock_emul_atomic();
+	return ret;
 }
 
-int32_t
-_phongo_emul_atomic_int32_exchange (volatile int32_t *p, int32_t n, enum phongo_memory_order _unused)
+int32_t _phongo_emul_atomic_int32_exchange(volatile int32_t* p, int32_t n, enum phongo_memory_order _unused)
 {
-   int32_t ret;
+	int32_t ret;
 
-   BSON_UNUSED (_unused);
+	BSON_UNUSED(_unused);
 
-   _lock_emul_atomic ();
-   ret = *p;
-   *p = n;
-   _unlock_emul_atomic ();
-   return ret;
+	_lock_emul_atomic();
+	ret = *p;
+	*p  = n;
+	_unlock_emul_atomic();
+	return ret;
 }
 
-int32_t
-_phongo_emul_atomic_int32_compare_exchange_strong (volatile int32_t *p,
-                                                 int32_t expect_value,
-                                                 int32_t new_value,
-                                                 enum phongo_memory_order _unused)
+int32_t _phongo_emul_atomic_int32_compare_exchange_strong(
+	volatile int32_t*        p,
+	int32_t                  expect_value,
+	int32_t                  new_value,
+	enum phongo_memory_order _unused)
 {
-   int32_t ret;
+	int32_t ret;
 
-   BSON_UNUSED (_unused);
+	BSON_UNUSED(_unused);
 
-   _lock_emul_atomic ();
-   ret = *p;
-   if (ret == expect_value) {
-      *p = new_value;
-   }
-   _unlock_emul_atomic ();
-   return ret;
+	_lock_emul_atomic();
+	ret = *p;
+	if (ret == expect_value) {
+		*p = new_value;
+	}
+	_unlock_emul_atomic();
+	return ret;
 }
 
-int32_t
-_phongo_emul_atomic_int32_compare_exchange_weak (volatile int32_t *p,
-                                               int32_t expect_value,
-                                               int32_t new_value,
-                                               enum phongo_memory_order order)
+int32_t _phongo_emul_atomic_int32_compare_exchange_weak(
+	volatile int32_t*        p,
+	int32_t                  expect_value,
+	int32_t                  new_value,
+	enum phongo_memory_order order)
 {
-   /* We're emulating. We can't do a weak version. */
-   return _phongo_emul_atomic_int32_compare_exchange_strong (p, expect_value, new_value, order);
+	/* We're emulating. We can't do a weak version. */
+	return _phongo_emul_atomic_int32_compare_exchange_strong(p, expect_value, new_value, order);
 }
