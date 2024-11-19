@@ -16,7 +16,7 @@
     "ext-json": "*"
   },
   "php-ext": {
-    "extension-name": "ext-mongodb",
+    "extension-name": "mongodb",
     "configure-options": [
       {
         "name": "enable-mongodb-developer-flags",
