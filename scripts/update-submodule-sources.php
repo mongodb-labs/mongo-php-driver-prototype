@@ -8,7 +8,7 @@ if (PHP_OS_FAMILY === 'Darwin') {
 }
 
 $vars = [
-    'PHP_MONGODB_COMMON_SOURCES' => 'src/libmongoc/src/common',
+    'PHP_MONGODB_COMMON_SOURCES' => 'src/libmongoc/src/common/src',
     'PHP_MONGODB_KMS_MESSAGE_SOURCES' => 'src/libmongoc/src/kms-message/src',
     'PHP_MONGODB_BSON_SOURCES' => 'src/libmongoc/src/libbson/src/bson',
     'PHP_MONGODB_JSONSL_SOURCES' => 'src/libmongoc/src/libbson/src/jsonsl',

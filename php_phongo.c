@@ -25,6 +25,7 @@
 #include <ext/standard/info.h>
 
 #include "php_phongo.h"
+#include "src/phongo_atomic.h"
 #include "src/phongo_client.h"
 #include "src/phongo_error.h"
 #include "src/phongo_ini.h"
@@ -130,7 +131,7 @@ PHP_GINIT_FUNCTION(mongodb) /* {{{ */
 #endif
 
 	/* Increment the thread counter. */
-	bson_atomic_int32_fetch_add(&phongo_num_threads, 1, bson_memory_order_seq_cst);
+	phongo_atomic_int32_fetch_add(&phongo_num_threads, 1, phongo_memory_order_seq_cst);
 
 	/* Clear extension globals */
 	memset(mongodb_globals, 0, sizeof(zend_mongodb_globals));
@@ -372,7 +373,7 @@ PHP_GSHUTDOWN_FUNCTION(mongodb) /* {{{ */
 	 * is the last thread, MSHUTDOWN has been called, persistent clients from
 	 * all threads have been destroyed, and it is now safe to shutdown libmongoc
 	 * and restore libbson's original vtable. */
-	if (bson_atomic_int32_fetch_sub(&phongo_num_threads, 1, bson_memory_order_seq_cst) - 1 == 0) {
+	if (phongo_atomic_int32_fetch_sub(&phongo_num_threads, 1, phongo_memory_order_seq_cst) - 1 == 0) {
 		mongoc_cleanup();
 		bson_mem_restore_vtable();
 	}
