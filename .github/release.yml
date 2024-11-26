@@ -1,0 +1,4 @@
+changelog:
+  exclude:
+    authors:
+      - mongodb-php-bot
