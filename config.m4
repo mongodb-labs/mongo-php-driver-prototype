@@ -168,6 +168,7 @@ if test "$PHP_MONGODB" != "no"; then
     src/BSON/UTCDateTimeInterface.c \
     src/BSON/functions.c \
     src/MongoDB/BulkWrite.c \
+    src/MongoDB/BulkWriteCommand.c \
     src/MongoDB/ClientEncryption.c \
     src/MongoDB/Command.c \
     src/MongoDB/Cursor.c \
