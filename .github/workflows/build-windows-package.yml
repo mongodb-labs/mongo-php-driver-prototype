@@ -114,7 +114,7 @@ jobs:
 
       - name: "Generate file name for DLL and archive"
         run:
-          echo FILENAME="php_mongodb-${{ inputs.version }}-${{ inputs.php }}-${{ inputs.ts }}-${{ needs.build.outputs.vs }}-${{ inputs.arch == 'x64' && 'x64_86' || inputs.arch }}" >> "$GITHUB_ENV"
+          echo FILENAME="php_mongodb-${{ inputs.version }}-${{ inputs.php }}-${{ inputs.ts }}-${{ needs.build.outputs.vs }}-${{ inputs.arch == 'x64' && 'x86_64' || inputs.arch }}" >> "$GITHUB_ENV"
 
       # In this step, we:
       # - update the extension DLL and PDB file names to match the expectation of pie
