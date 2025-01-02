@@ -74,6 +74,8 @@ final class Server
 
     final public function executeBulkWrite(string $namespace, BulkWrite $bulkWrite, array|WriteConcern|null $options = null): WriteResult {}
 
+    final public function executeBulkWriteCommand(BulkWriteCommand $bulkWriteCommand, ?array $options = null): ?BulkWriteCommandResult {}
+
     final public function executeCommand(string $db, Command $command, array|ReadPreference|null $options = null): Cursor {}
 
     final public function executeQuery(string $namespace, Query $query, array|ReadPreference|null $options = null): Cursor {}
