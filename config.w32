@@ -134,7 +134,6 @@ if (PHP_MONGODB != "no") {
     BSON_HAVE_STRNLEN: 0,
     BSON_HAVE_SNPRINTF: 0,
     BSON_HAVE_STRLCPY: 0,
-    BSON_NEEDS_SET_OUTPUT_FORMAT: 0,
     BSON_HAVE_TIMESPEC: 0,
     BSON_EXTRA_ALIGN: 0,
     BSON_HAVE_DECIMAL128: 0,
@@ -142,10 +141,6 @@ if (PHP_MONGODB != "no") {
     BSON_HAVE_RAND_R: 0,
     BSON_HAVE_ARC4RANDOM_BUF: 0
   };
-
-  if (CHECK_FUNC_IN_HEADER("stdio.h", "_set_output_format")) {
-    bson_opts.BSON_NEEDS_SET_OUTPUT_FORMAT = 1;
-  }
 
   mongodb_generate_header(
     configure_module_dirname + "/src/libmongoc/src/libbson/src/bson/bson-config.h.in",
