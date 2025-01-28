@@ -13,20 +13,6 @@ if test "$bson_cv_have_strnlen" = yes; then
     AC_SUBST(BSON_HAVE_STRNLEN, 1)
 fi
 
-# Check for reallocf() (BSD/Darwin)
-AC_SUBST(BSON_HAVE_REALLOCF, 0)
-AC_CACHE_CHECK([for reallocf],
-  bson_cv_have_reallocf,
-  [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <stdlib.h>
-int reallocf () { return 0; }
-]])],
-    [bson_cv_have_reallocf=no],
-    [bson_cv_have_reallocf=yes])])
-if test "$bson_cv_have_reallocf" = yes; then
-    AC_SUBST(BSON_HAVE_REALLOCF, 1)
-fi
-
 # Check for syscall()
 AC_SUBST(BSON_HAVE_SYSCALL_TID, 0)
 AC_CACHE_CHECK([for syscall],
