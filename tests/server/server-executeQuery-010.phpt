@@ -40,10 +40,14 @@ echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "
 <?php exit(0); ?>
 --EXPECTF--
 Testing primary:
+
+Deprecated: MongoDB\Driver\Server::executeQuery(): Passing the "readPreference" option directly is deprecated and will be removed in ext-mongodb 2.0%s
 is_primary: true
 is_secondary: false
 
 Testing secondary:
+
+Deprecated: MongoDB\Driver\Server::executeQuery(): Passing the "readPreference" option directly is deprecated and will be removed in ext-mongodb 2.0%s
 is_primary: false
 is_secondary: true
 
