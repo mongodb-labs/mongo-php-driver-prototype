@@ -8,7 +8,7 @@
 namespace MongoDB\Driver\Exception;
 
 /** @deprecated use MongoDB\Driver\Exception\BulkWriteException instead */
-abstract class WriteException extends RuntimeException
+abstract class WriteException extends ServerException
 {
     /** @var \MongoDB\Driver\WriteResult */
     protected $writeResult;
