@@ -26,7 +26,7 @@ $rps = [
 
 foreach($rps as $r) {
     $rp = new MongoDB\Driver\ReadPreference($r);
-    $cursor = $manager->executeQuery(NS, new MongoDB\Driver\Query(array("my" => "query")), $rp);
+    $cursor = $manager->executeQuery(NS, new MongoDB\Driver\Query(['my' => 'query']), ['readPreference' => $rp]);
     var_dump($cursor);
 }
 

@@ -15,7 +15,7 @@ $wc = new MongoDB\Driver\WriteConcern(MongoDB\Driver\WriteConcern::MAJORITY);
 $bulk = new MongoDB\Driver\BulkWrite();
 $bulk->insert(['_id' => 1, 'x' => 1]);
 $bulk->insert(['_id' => 2, 'x' => 2]);
-$manager->executeBulkWrite(NS, $bulk, $wc);
+$manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $wc]);
 
 $rc = new MongoDB\Driver\ReadConcern(MongoDB\Driver\ReadConcern::LOCAL);
 $query = new MongoDB\Driver\Query(['x' => 2], ['readConcern' => $rc]);

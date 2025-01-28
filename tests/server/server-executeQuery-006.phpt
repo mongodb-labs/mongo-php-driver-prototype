@@ -24,7 +24,7 @@ if (empty($result->ok)) {
     exit("Could not set profile level\n");
 }
 
-$secondary->executeQuery(NS, new MongoDB\Driver\Query(array("x" => 1)), $rp);
+$secondary->executeQuery(NS, new MongoDB\Driver\Query(['x' => 1]), ['readPreference' => $rp]);
 
 $query = new MongoDB\Driver\Query(
     array(
@@ -36,7 +36,7 @@ $query = new MongoDB\Driver\Query(
         'limit' => 1,
     )
 );
-$cursor = $secondary->executeQuery(DATABASE_NAME . '.system.profile', $query, $rp);
+$cursor = $secondary->executeQuery(DATABASE_NAME . '.system.profile', $query, ['readPreference' => $rp]);
 $profileEntry = current($cursor->toArray());
 
 if (! isset( $profileEntry->command )) {

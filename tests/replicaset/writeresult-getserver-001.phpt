@@ -30,7 +30,7 @@ var_dump($server == $server2);
 
 $rp = new MongoDB\Driver\ReadPreference(MongoDB\Driver\ReadPreference::SECONDARY);
 /* Fetch a secondary */
-$server3 = $manager->executeQuery(NS, new MongoDB\Driver\Query(array()), $rp)->getServer();
+$server3 = $manager->executeQuery(NS, new MongoDB\Driver\Query([]), ['readPreference' => $rp])->getServer();
 
 var_dump($server == $server3);
 var_dump($server->getPort(), $server3->getPort());

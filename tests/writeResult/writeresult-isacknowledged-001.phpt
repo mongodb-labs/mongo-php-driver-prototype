@@ -19,7 +19,7 @@ foreach ($wcs as $wc) {
     $bulk = new MongoDB\Driver\BulkWrite;
     $bulk->insert(['x' => 1]);
 
-    $result = $manager->executeBulkWrite(NS, $bulk, $wc);
+    $result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $wc]);
 
     var_dump($result->isAcknowledged());
 }

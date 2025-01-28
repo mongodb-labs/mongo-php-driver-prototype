@@ -20,7 +20,7 @@ $w = 2;
 $wtimeout = 1000;
 $writeConcern = new \MongoDB\Driver\WriteConcern($w, $wtimeout);
 echo throws(function() use($bulk, $writeConcern, $manager) {
-    $result = $manager->executeBulkWrite(NS, $bulk, $writeConcern);
+    $result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $writeConcern]);
 }, "MongoDB\Driver\Exception\BulkWriteException"),  "\n";
 
 ?>

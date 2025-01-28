@@ -12,7 +12,7 @@ $manager = create_test_manager();
 
 $bulk = new \MongoDB\Driver\BulkWrite;
 $bulk->insert(array('x' => 2));
-$result = $manager->executeBulkWrite(NS, $bulk, new MongoDB\Driver\WriteConcern(0));
+$result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern(0)]);
 
 printf("WriteResult::isAcknowledged(): %s\n", $result->isAcknowledged() ? 'true' : 'false');
 var_dump($result);
