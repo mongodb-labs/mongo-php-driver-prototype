@@ -338,7 +338,6 @@ if test "$PHP_MONGODB" != "no"; then
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/CheckHost.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/PlatformFlags.m4)
 
-    m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libbson/CheckAtomics.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libbson/CheckHeaders.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libbson/Endian.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libbson/FindDependencies.m4)
