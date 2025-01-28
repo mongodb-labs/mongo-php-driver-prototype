@@ -137,8 +137,7 @@ if (PHP_MONGODB != "no") {
     BSON_HAVE_TIMESPEC: 0,
     BSON_EXTRA_ALIGN: 0,
     BSON_HAVE_GMTIME_R: 0,
-    BSON_HAVE_RAND_R: 0,
-    BSON_HAVE_ARC4RANDOM_BUF: 0
+    BSON_HAVE_RAND_R: 0
   };
 
   mongodb_generate_header(
