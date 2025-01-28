@@ -351,7 +351,6 @@ if test "$PHP_MONGODB" != "no"; then
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libmongoc/Endian.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libmongoc/FindDependencies.m4)
     m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libmongoc/Versions.m4)
-    m4_include(PHP_MONGODB_BASEDIR/scripts/autotools/libmongoc/WeakSymbols.m4)
 
     dnl This include modifies the value of $PHP_MONGODB_CLIENT_SIDE_ENCRYPTION to "yes"
     dnl or "no" depending on whether dependencies for libmongocrypt are fulfilled
