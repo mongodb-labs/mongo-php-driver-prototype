@@ -13,32 +13,6 @@ if test "$bson_cv_have_strnlen" = yes; then
     AC_SUBST(BSON_HAVE_STRNLEN, 1)
 fi
 
-# Check for syscall()
-AC_SUBST(BSON_HAVE_SYSCALL_TID, 0)
-AC_CACHE_CHECK([for syscall],
-  bson_cv_have_syscall_tid,
-  [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <unistd.h>
-#include <sys/syscall.h>
-int syscall () { return 0; }
-]])],
-    [bson_cv_have_syscall_tid=no],
-    [bson_cv_have_syscall_tid=yes])])
-if test "$bson_cv_have_syscall_tid" = yes -a "$os_darwin" != "yes"; then
-   AC_CACHE_CHECK([for SYS_gettid],
-     bson_cv_have_sys_gettid_tid,
-     [AC_COMPILE_IFELSE([AC_LANG_PROGRAM([[
-#include <unistd.h>
-#include <sys/syscall.h>
-int gettid () { return SYS_gettid; }
-   ]])],
-       [bson_cv_have_sys_gettid_tid=yes],
-       [bson_cv_have_sys_gettid_tid=no])])
-   if test "$bson_cv_have_sys_gettid_tid" = yes; then
-       AC_SUBST(BSON_HAVE_SYSCALL_TID, 1)
-   fi
-fi
-
 # Check for snprintf()
 AC_SUBST(BSON_HAVE_SNPRINTF, 0)
 AC_CHECK_FUNC(snprintf, [AC_SUBST(BSON_HAVE_SNPRINTF, 1)])
