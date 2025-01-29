@@ -24,14 +24,14 @@ $secondary = $manager->selectServer($secondaryRp);
 
 echo "Testing primary:\n";
 $query = new MongoDB\Driver\Query(['x' => 3], ['projection' => ['y' => 1]]);
-$cursor = $manager->executeQuery(NS, $query, $primaryRp);
+$cursor = $primary->executeQuery(NS, $query, $primaryRp);
 
 echo "is_primary: ", $cursor->getServer()->isPrimary() ? 'true' : 'false', "\n";
 echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "\n\n";
 
 echo "Testing secondary:\n";
 $query = new MongoDB\Driver\Query(['x' => 3], ['projection' => ['y' => 1]]);
-$cursor = $manager->executeQuery(NS, $query, $secondaryRp);
+$cursor = $secondary->executeQuery(NS, $query, $secondaryRp);
 
 echo "is_primary: ", $cursor->getServer()->isPrimary() ? 'true' : 'false', "\n";
 echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "\n\n";
