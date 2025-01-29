@@ -1,7 +1,5 @@
 --TEST--
 MongoDB\Driver\Server::executeQuery() pins transaction to server
---XFAIL--
-_mongoc_cursor_fetch_stream segfault (CDRIVER-4290)
 --SKIPIF--
 <?php require __DIR__ . "/../utils/basic-skipif.inc"; ?>
 <?php skip_if_not_mongos(); ?>
