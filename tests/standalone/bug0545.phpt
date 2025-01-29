@@ -57,7 +57,7 @@ $page1->content = 'Lorem ipsum';
 $book->pages[] = $page1;
 $bulk = new MongoDB\Driver\BulkWrite;
 $bulk->insert($book);
-$result = $manager->executeBulkWrite(NS, $bulk, $wc);
+$result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $wc]);
 printf("Inserted %d document(s)\n", $result->getInsertedCount());
 
 // Read
@@ -72,7 +72,7 @@ $page2->content = 'Dolor sit amet';
 $bookAfterInsert->pages[] = $page2;
 $bulk = new MongoDB\Driver\BulkWrite;
 $bulk->update(['title' => $bookAfterInsert->title], $bookAfterInsert);
-$result = $manager->executeBulkWrite(NS, $bulk, $wc);
+$result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $wc]);
 printf("Modified %d document(s)\n", $result->getModifiedCount());
 
 // Read (again)

@@ -17,7 +17,7 @@ $secondary = $manager->selectServer($secondaryRp);
  * no effect when directly querying a server, since the secondaryOk flag is always
  * set for hinted commands. */
 $primaryRp = new MongoDB\Driver\ReadPreference(MongoDB\Driver\ReadPreference::PRIMARY);
-$cursor = $secondary->executeCommand(DATABASE_NAME, new MongoDB\Driver\Command(array('ping' => 1)), $primaryRp);
+$cursor = $secondary->executeCommand(DATABASE_NAME, new MongoDB\Driver\Command(array('ping' => 1)), ['readPreference' => $primaryRp]);
 
 var_dump($cursor->toArray());
 

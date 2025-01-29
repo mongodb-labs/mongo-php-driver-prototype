@@ -25,7 +25,7 @@ $command = new MongoDB\Driver\Command([
     'pipeline' => [ [ '$match' => [ 'x' => 1 ] ] ],
     'cursor' => (object) [],
 ]);
-$secondary->executeCommand(DATABASE_NAME, $command, $rp);
+$secondary->executeCommand(DATABASE_NAME, $command, ['readPreference' => $rp]);
 
 $query = new MongoDB\Driver\Query(
     array(
@@ -37,7 +37,7 @@ $query = new MongoDB\Driver\Query(
         'limit' => 1,
     )
 );
-$cursor = $secondary->executeQuery(DATABASE_NAME . '.system.profile', $query, $rp);
+$cursor = $secondary->executeQuery(DATABASE_NAME . '.system.profile', $query, ['readPreference' => $rp]);
 $profileEntry = current($cursor->toArray());
 
 var_dump($profileEntry->command);

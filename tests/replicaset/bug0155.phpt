@@ -15,7 +15,7 @@ $bulk = new MongoDB\Driver\BulkWrite();
 $bulk->insert(array('example' => 'document'));
 
 try {
-    $manager->executeBulkWrite(NS, $bulk, $wc);
+    $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => $wc]);
 } catch(MongoDB\Driver\Exception\BulkWriteException $e) {
     var_dump($e->getWriteResult()->getWriteConcernError());
 }

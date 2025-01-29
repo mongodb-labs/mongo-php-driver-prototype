@@ -15,7 +15,7 @@ $bulk->insert(['x' => 1]);
 
 try {
     /* We assume that the replica set does not have 12 nodes */
-    $result = $manager->executeBulkWrite(NS, $bulk, new MongoDB\Driver\WriteConcern(12));
+    $result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern(12)]);
 } catch (MongoDB\Driver\Exception\BulkWriteException $e) {
     var_dump($e->getWriteResult()->getWriteConcernError());
 }

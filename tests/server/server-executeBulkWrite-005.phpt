@@ -23,7 +23,7 @@ foreach ($writeConcerns as $wc) {
     $bulk = new MongoDB\Driver\BulkWrite();
     $bulk->insert(array('wc' => $wc));
 
-    $result = $server->executeBulkWrite('local.' . COLLECTION_NAME, $bulk, new MongoDB\Driver\WriteConcern($wc));
+    $result = $server->executeBulkWrite('local.' . COLLECTION_NAME, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern($wc)]);
     var_dump($result->isAcknowledged());
     var_dump($result->getInsertedCount());
 }
