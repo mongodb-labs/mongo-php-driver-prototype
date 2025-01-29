@@ -1,5 +1,5 @@
 /* This is a generated file, edit the .stub.php file instead.
- * Stub hash: bf7229dbad041a8fe73af62d1961700783a933e3 */
+ * Stub hash: d68a9b6bb6ba6a1222689ffe95c58ce91b3a6704 */
 
 ZEND_BEGIN_ARG_WITH_RETURN_OBJ_INFO_EX(arginfo_class_MongoDB_Driver_Exception_WriteException_getWriteResult, 0, 0, MongoDB\\Driver\\WriteResult, 0)
 ZEND_END_ARG_INFO()
@@ -13,12 +13,12 @@ static const zend_function_entry class_MongoDB_Driver_Exception_WriteException_m
 	ZEND_FE_END
 };
 
-static zend_class_entry *register_class_MongoDB_Driver_Exception_WriteException(zend_class_entry *class_entry_MongoDB_Driver_Exception_RuntimeException)
+static zend_class_entry *register_class_MongoDB_Driver_Exception_WriteException(zend_class_entry *class_entry_MongoDB_Driver_Exception_ServerException)
 {
 	zend_class_entry ce, *class_entry;
 
 	INIT_NS_CLASS_ENTRY(ce, "MongoDB\\Driver\\Exception", "WriteException", class_MongoDB_Driver_Exception_WriteException_methods);
-	class_entry = zend_register_internal_class_ex(&ce, class_entry_MongoDB_Driver_Exception_RuntimeException);
+	class_entry = zend_register_internal_class_ex(&ce, class_entry_MongoDB_Driver_Exception_ServerException);
 	class_entry->ce_flags |= ZEND_ACC_ABSTRACT|ZEND_ACC_DEPRECATED;
 
 	zval property_writeResult_default_value;
