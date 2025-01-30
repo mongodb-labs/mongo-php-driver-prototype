@@ -239,6 +239,10 @@ if (PHP_MONGODB != "no") {
       CHECK_HEADER_ADD_INCLUDE("sasl/sasl.h", "CFLAGS_MONGODB")) {
     mongoc_opts.MONGOC_ENABLE_SASL = 1;
     mongoc_opts.MONGOC_ENABLE_SASL_CYRUS = 1;
+
+    // Referenced by _mongoc_cyrus_verifyfile_cb in mongoc-cyrus.c on Windows
+    ADD_FLAG("CFLAGS_MONGODB", "/D MONGOC_CYRUS_PLUGIN_PATH_PREFIX=NULL");
+
     if (CHECK_FUNC_IN_HEADER("sasl/sasl.h", "sasl_client_done")) {
       mongoc_opts.MONGOC_HAVE_SASL_CLIENT_DONE = 1;
     }
