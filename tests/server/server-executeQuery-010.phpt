@@ -24,14 +24,14 @@ $secondary = $manager->selectServer($secondaryRp);
 
 echo "Testing primary:\n";
 $query = new MongoDB\Driver\Query(['x' => 3], ['projection' => ['y' => 1]]);
-$cursor = $manager->executeQuery(NS, $query, $primaryRp);
+$cursor = $primary->executeQuery(NS, $query, $primaryRp);
 
 echo "is_primary: ", $cursor->getServer()->isPrimary() ? 'true' : 'false', "\n";
 echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "\n\n";
 
 echo "Testing secondary:\n";
 $query = new MongoDB\Driver\Query(['x' => 3], ['projection' => ['y' => 1]]);
-$cursor = $manager->executeQuery(NS, $query, $secondaryRp);
+$cursor = $secondary->executeQuery(NS, $query, $secondaryRp);
 
 echo "is_primary: ", $cursor->getServer()->isPrimary() ? 'true' : 'false', "\n";
 echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "\n\n";
@@ -40,10 +40,14 @@ echo "is_secondary: ", $cursor->getServer()->isSecondary() ? 'true' : 'false', "
 <?php exit(0); ?>
 --EXPECTF--
 Testing primary:
+
+Deprecated: MongoDB\Driver\Server::executeQuery(): Passing the "readPreference" option directly is deprecated and will be removed in ext-mongodb 2.0%s
 is_primary: true
 is_secondary: false
 
 Testing secondary:
+
+Deprecated: MongoDB\Driver\Server::executeQuery(): Passing the "readPreference" option directly is deprecated and will be removed in ext-mongodb 2.0%s
 is_primary: false
 is_secondary: true
 

@@ -39,7 +39,7 @@ foreach($tests as $n => $test) {
 ?>
 ===DONE===
 <?php exit(0); ?>
---EXPECT--
+--EXPECTF--
 Test#0 { "hello" : "world" }
      0 : 16 00 00 00 02 68 65 6c 6c 6f 00 06 00 00 00 77  [.....hello.....w]
     10 : 6f 72 6c 64 00 00                                [orld..]
@@ -98,7 +98,7 @@ Test#16 { "foo" : "test", "0" : "foo", "1" : "bar" }
      0 : 29 00 00 00 02 66 6f 6f 00 05 00 00 00 74 65 73  [)....foo.....tes]
     10 : 74 00 02 30 00 04 00 00 00 66 6f 6f 00 02 31 00  [t..0.....foo..1.]
     20 : 04 00 00 00 62 61 72 00 00                       [....bar..]
-Test#17 { "int" : { "$numberInt" : "3" }, "boolean" : true, "array" : [ "foo", "bar" ], "object" : {  }, "string" : "test", "3" : "test" }
+Test#17 { "int" : { "$numberInt" : "3" }, "boolean" : true, "array" : [ "foo", "bar" ], "object" : { %w}, "string" : "test", "3" : "test" }
      0 : 64 00 00 00 10 69 6e 74 00 03 00 00 00 08 62 6f  [d....int......bo]
     10 : 6f 6c 65 61 6e 00 01 04 61 72 72 61 79 00 1b 00  [olean...array...]
     20 : 00 00 02 30 00 04 00 00 00 66 6f 6f 00 02 31 00  [...0.....foo..1.]
@@ -123,7 +123,7 @@ Test#21 { "0" : { "foo" : "test", "0" : "foo", "1" : "bar" } }
     10 : 05 00 00 00 74 65 73 74 00 02 30 00 04 00 00 00  [....test..0.....]
     20 : 66 6f 6f 00 02 31 00 04 00 00 00 62 61 72 00 00  [foo..1.....bar..]
     30 : 00                                               [.]
-Test#22 { "0" : { "int" : { "$numberInt" : "3" }, "boolean" : true, "array" : [ "foo", "bar" ], "object" : {  }, "string" : "test", "3" : "test" } }
+Test#22 { "0" : { "int" : { "$numberInt" : "3" }, "boolean" : true, "array" : [ "foo", "bar" ], "object" : { %w}, "string" : "test", "3" : "test" } }
      0 : 6c 00 00 00 03 30 00 64 00 00 00 10 69 6e 74 00  [l....0.d....int.]
     10 : 03 00 00 00 08 62 6f 6f 6c 65 61 6e 00 01 04 61  [.....boolean...a]
     20 : 72 72 61 79 00 1b 00 00 00 02 30 00 04 00 00 00  [rray......0.....]

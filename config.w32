@@ -130,27 +130,15 @@ if (PHP_MONGODB != "no") {
     BSON_OS: 2,
     BSON_HAVE_STDBOOL_H: 0,
     BSON_HAVE_STRINGS_H: 0,
-    BSON_HAVE_ATOMIC_32_ADD_AND_FETCH: 0,
-    BSON_HAVE_ATOMIC_64_ADD_AND_FETCH: 0,
-    BSON_PTHREAD_ONCE_INIT_NEEDS_BRACES: 0,
     BSON_HAVE_CLOCK_GETTIME: 0,
     BSON_HAVE_STRNLEN: 0,
     BSON_HAVE_SNPRINTF: 0,
     BSON_HAVE_STRLCPY: 0,
-    BSON_HAVE_REALLOCF: 0,
-    BSON_NEEDS_SET_OUTPUT_FORMAT: 0,
     BSON_HAVE_TIMESPEC: 0,
     BSON_EXTRA_ALIGN: 0,
-    BSON_HAVE_SYSCALL_TID: 0,
-    BSON_HAVE_DECIMAL128: 0,
     BSON_HAVE_GMTIME_R: 0,
-    BSON_HAVE_RAND_R: 0,
-    BSON_HAVE_ARC4RANDOM_BUF: 0
+    BSON_HAVE_RAND_R: 0
   };
-
-  if (CHECK_FUNC_IN_HEADER("stdio.h", "_set_output_format")) {
-    bson_opts.BSON_NEEDS_SET_OUTPUT_FORMAT = 1;
-  }
 
   mongodb_generate_header(
     configure_module_dirname + "/src/libmongoc/src/libbson/src/bson/bson-config.h.in",
@@ -187,7 +175,6 @@ if (PHP_MONGODB != "no") {
     MONGOC_ENABLE_MONGODB_AWS_AUTH: 0,
     MONGOC_ENABLE_SASL: 0,
     MONGOC_ENABLE_SASL_CYRUS: 0,
-    MONGOC_ENABLE_SASL_GSSAPI: 0,
     MONGOC_ENABLE_SASL_SSPI: 0,
     MONGOC_ENABLE_SRV: 0,
     MONGOC_ENABLE_RDTSCP: 0,
@@ -196,7 +183,6 @@ if (PHP_MONGODB != "no") {
     MONGOC_HAVE_SASL_CLIENT_DONE: 0,
     MONGOC_HAVE_SCHED_GETCPU: 0,
     MONGOC_HAVE_SOCKLEN: 1,
-    MONGOC_HAVE_WEAK_SYMBOLS: 0,
     MONGOC_NO_AUTOMATIC_GLOBALS: 1,
     MONGOC_SOCKET_ARG2: "struct sockaddr",
     MONGOC_SOCKET_ARG3: "socklen_t",
@@ -253,6 +239,10 @@ if (PHP_MONGODB != "no") {
       CHECK_HEADER_ADD_INCLUDE("sasl/sasl.h", "CFLAGS_MONGODB")) {
     mongoc_opts.MONGOC_ENABLE_SASL = 1;
     mongoc_opts.MONGOC_ENABLE_SASL_CYRUS = 1;
+
+    // Referenced by _mongoc_cyrus_verifyfile_cb in mongoc-cyrus.c on Windows
+    ADD_FLAG("CFLAGS_MONGODB", "/D MONGOC_CYRUS_PLUGIN_PATH_PREFIX=NULL");
+
     if (CHECK_FUNC_IN_HEADER("sasl/sasl.h", "sasl_client_done")) {
       mongoc_opts.MONGOC_HAVE_SASL_CLIENT_DONE = 1;
     }

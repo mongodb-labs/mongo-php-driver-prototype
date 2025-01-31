@@ -21,7 +21,7 @@ foreach ($writeConcerns as $wc) {
     $bulk->insert(array('wc' => $wc));
 
     echo throws(function() use ($server, $bulk, $wc) {
-        $server->executeBulkWrite(NS, $bulk, new MongoDB\Driver\WriteConcern($wc));
+        $server->executeBulkWrite(NS, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern($wc)]);
     }, "MongoDB\Driver\Exception\RuntimeException"), "\n";
 }
 

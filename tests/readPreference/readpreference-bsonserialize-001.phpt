@@ -24,7 +24,7 @@ foreach ($tests as $test) {
 ?>
 ===DONE===
 <?php exit(0); ?>
---EXPECT--
+--EXPECTF--
 { "mode" : "primary" }
 { "mode" : "primaryPreferred" }
 { "mode" : "secondary" }
@@ -32,6 +32,6 @@ foreach ($tests as $test) {
 { "mode" : "nearest" }
 { "mode" : "primary" }
 { "mode" : "secondary", "tags" : [ { "dc" : "ny" } ] }
-{ "mode" : "secondary", "tags" : [ { "dc" : "ny" }, { "dc" : "sf", "use" : "reporting" }, {  } ] }
+{ "mode" : "secondary", "tags" : [ { "dc" : "ny" }, { "dc" : "sf", "use" : "reporting" }, { %w} ] }
 { "mode" : "secondary", "maxStalenessSeconds" : { "$numberInt" : "1000" } }
 ===DONE===

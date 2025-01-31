@@ -21,7 +21,7 @@ $w = 1;
 $wtimeout = 1000;
 $writeConcern = new \MongoDB\Driver\WriteConcern($w, $wtimeout);
 var_dump($insertBulk);
-$result = $manager->executeBulkWrite(NS, $insertBulk, $writeConcern);
+$result = $manager->executeBulkWrite(NS, $insertBulk, ['writeConcern' => $writeConcern]);
 var_dump($insertBulk);
 
 assert($result instanceof \MongoDB\Driver\WriteResult);

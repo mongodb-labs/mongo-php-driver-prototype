@@ -18,7 +18,7 @@ foreach ($writeConcerns as $wc) {
     $bulk = new MongoDB\Driver\BulkWrite();
     $bulk->insert(array('wc' => $wc));
 
-    $result = $server->executeBulkWrite(NS, $bulk, new MongoDB\Driver\WriteConcern($wc));
+    $result = $server->executeBulkWrite(NS, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern($wc)]);
     var_dump($result->isAcknowledged());
     if ($result->isAcknowledged()) {
         var_dump($result->getInsertedCount());

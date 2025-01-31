@@ -92,6 +92,8 @@ zval* php_phongo_prep_legacy_option(zval* options, const char* key, bool* alloca
 		Z_ADDREF_P(options);
 		*allocated = true;
 
+		php_error_docref(NULL, E_DEPRECATED, "Passing the \"%s\" option directly is deprecated and will be removed in ext-mongodb 2.0", key);
+
 		return new_options;
 	}
 

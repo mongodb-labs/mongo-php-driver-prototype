@@ -17,7 +17,7 @@ $bulk->update(['x' => 2], ['$set' => ['y' => 1]], ['upsert' => true]);
 $bulk->update(['x' => 3], ['$set' => ['y' => 2]], ['upsert' => true]);
 $bulk->delete(['x' => 1]);
 
-$result = $manager->executeBulkWrite(NS, $bulk, new MongoDB\Driver\WriteConcern(0));
+$result = $manager->executeBulkWrite(NS, $bulk, ['writeConcern' => new MongoDB\Driver\WriteConcern(0)]);
 
 echo throws(function() use ($result) {
     $result->getModifiedCount();
