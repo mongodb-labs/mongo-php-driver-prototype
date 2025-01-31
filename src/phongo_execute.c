@@ -27,6 +27,8 @@
 #include "phongo_execute.h"
 #include "phongo_util.h"
 
+#include "MongoDB/BulkWriteCommand.h"
+#include "MongoDB/BulkWriteCommandResult.h"
 #include "MongoDB/Cursor.h"
 #include "MongoDB/ReadPreference.h"
 #include "MongoDB/Session.h"
@@ -329,6 +331,104 @@ bool phongo_execute_bulk_write(zval* manager, const char* namespace, php_phongo_
 
 cleanup:
 	bson_destroy(&reply);
+
+	return success;
+}
+
+bool phongo_execute_bulkwritecommand(zval* manager, php_phongo_bulkwritecommand_t* bwc, zval* zoptions, uint32_t server_id, zval* return_value)
+{
+	mongoc_client_t*                     client = NULL;
+	mongoc_bulkwrite_t*                  bw = bwc->bw;
+	mongoc_bulkwriteopts_t*              bw_opts = NULL;
+	mongoc_bulkwritereturn_t             bw_ret = { 0 };
+	php_phongo_bulkwritecommandresult_t* bwcr;
+	zval*                                zsession = NULL;
+	bool                                 success = true;
+
+	client = Z_MANAGER_OBJ_P(manager)->client;
+
+	if (!phongo_parse_session(zoptions, client, NULL, &zsession)) {
+		/* Exception should already have been thrown */
+		return false;
+	}
+
+	mongoc_bulkwrite_set_client(bw, client);
+
+	bw_opts = phongo_bwc_assemble_opts(bwc);
+	mongoc_bulkwriteopts_set_serverid(bw_opts, server_id);
+
+	if (zsession) {
+		mongoc_bulkwrite_set_session(bw, Z_SESSION_OBJ_P(zsession)->client_session);
+		/* Save a reference to the session on the class struct to avoid leaving
+		 * a dangling pointer within mongoc_bulkwrite_t. */
+		ZVAL_ZVAL(&bwc->session, zsession, 1, 0);
+	}
+
+	bw_ret = mongoc_bulkwrite_execute(bw, bw_opts);
+
+	bwcr = phongo_bulkwritecommandresult_init(return_value, &bw_ret, manager);
+
+	/* Error handling for mongoc_bulkwrite_execute differs significantly from
+	 * mongoc_bulk_operation_execute.
+	 *
+	 * - There may or may not be a top-level error. Top-level errors include
+	 *   both logical errors (invalid arguments) and runtime errors (e.g. server
+	 *   selection failure). A bulk write fails due to write or write concern
+	 *   errors will typically not have a top-level error.
+	 *
+	 * - There may or may not be an error reply document. This document could be
+	 *   the response of a failed bulkWrite command, but it may also originate
+	 *   from libmongoc (e.g. server selection, appending a session, iterating
+	 *   BSON). This function only uses it to extrapolate error labels and it is
+	 *   otherwise accessible to the user through BulkWriteCommandResult.
+	 *
+	 * - InvalidArgumentException may be thrown directly for a basic top-level
+	 *   error (assuming BulkWriteCommandResult would also be irrelevant).
+	 *   Otherwise, BulkWriteCommandException is thrown with an attached
+	 *   BulkWriteCommandResult that collects any error reply, write errors, and
+	 *   write concern errors, along with a possible partial write result.
+	 */
+	if (bw_ret.exc) {
+		success = false;
+		bson_error_t error = { 0 };
+		const bson_t *error_reply = mongoc_bulkwriteexception_errorreply(bw_ret.exc);
+
+		// Consult any top-level error to throw the first exception
+		if (mongoc_bulkwriteexception_error(bw_ret.exc, &error)) {
+			phongo_throw_exception_from_bson_error_t_and_reply(&error, error_reply);
+		}
+
+		/* Unlike mongoc_bulk_operation_execute, mongoc_bulkwrite_execute may
+		 * report MONGOC_ERROR_COMMAND_INVALID_ARG alongside a partial result
+		 * (CDRIVER-5842). Throw InvalidArgumentException directly iff there is
+		 * neither a partial write result nor an error reply (we can assume
+		 * there are no write or write concern errors for this case). */
+		if (EG(exception) && EG(exception)->ce == php_phongo_invalidargumentexception_ce && !bw_ret.res && !error_reply) {
+			goto cleanup;
+		}
+
+		if (EG(exception)) {
+			char* message;
+
+			(void) spprintf(&message, 0, "Bulk write failed due to previous %s: %s", PHONGO_ZVAL_EXCEPTION_NAME(EG(exception)), error.message);
+			zend_throw_exception(php_phongo_bulkwritecommandexception_ce, message, 0);
+			efree(message);
+		} else {
+			zend_throw_exception(php_phongo_bulkwritecommandexception_ce, "Bulk write failed", 0);
+		}
+
+		/* Ensure error labels are added to the final BulkWriteCommandException.
+		 * If RuntimeException was previously thrown, labels may also have been
+		 * added to it by phongo_throw_exception_from_bson_error_t_and_reply. */
+		phongo_exception_add_error_labels(error_reply);
+
+		phongo_add_exception_prop(ZEND_STRL("bulkWriteCommandResult"), return_value);
+	}
+
+cleanup:
+	mongoc_bulkwriteopts_destroy(bw_opts);
+	mongoc_bulkwriteresult_destroy(bw_ret.res);
+	mongoc_bulkwriteexception_destroy(bw_ret.exc);
 
 	return success;
 }

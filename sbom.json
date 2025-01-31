@@ -19,22 +19,22 @@
       "version": "1.12.0"
     },
     {
-      "bom-ref": "pkg:github/mongodb/mongo-c-driver@1.29.2",
+      "bom-ref": "pkg:github/mongodb/mongo-c-driver@1.30.0-20241210%2Bgit9ed337b634",
       "externalReferences": [
         {
           "type": "distribution",
-          "url": "https://github.com/mongodb/mongo-c-driver/archive/refs/tags/1.29.2.tar.gz"
+          "url": "https://github.com/mongodb/mongo-c-driver/archive/refs/tags/1.30.0-20241210+git9ed337b634.tar.gz"
         },
         {
           "type": "website",
-          "url": "https://github.com/mongodb/mongo-c-driver/tree/1.29.2"
+          "url": "https://github.com/mongodb/mongo-c-driver/tree/1.30.0-20241210+git9ed337b634"
         }
       ],
       "group": "mongodb",
       "name": "mongo-c-driver",
-      "purl": "pkg:github/mongodb/mongo-c-driver@1.29.2",
+      "purl": "pkg:github/mongodb/mongo-c-driver@1.30.0-20241210%2Bgit9ed337b634",
       "type": "library",
-      "version": "1.29.2"
+      "version": "1.30.0-20241210+git9ed337b634"
     }
   ],
   "dependencies": [
@@ -42,11 +42,11 @@
       "ref": "pkg:github/mongodb/libmongocrypt@1.12.0"
     },
     {
-      "ref": "pkg:github/mongodb/mongo-c-driver@1.29.2"
+      "ref": "pkg:github/mongodb/mongo-c-driver@1.30.0-20241210%2Bgit9ed337b634"
     }
   ],
   "metadata": {
-    "timestamp": "2025-01-14T14:24:24.250261+00:00",
+    "timestamp": "2024-12-10T21:23:50.248055+00:00",
     "tools": [
       {
         "externalReferences": [
